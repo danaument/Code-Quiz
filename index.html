@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Code Quiz!</title>
 </head>
 <body>
     <header>
         <div id="headerViewScores">View High Scores</div>
         <div id="timerLeft">
-            <div>Time left</div>
-            <div>Reset button</div>
+            <div>Time left:<span id="timerSpan"></span></div>
+            <button id="resetButton">Reset</button>
         </div>
     </header>
     <main>
-        <div id="startQuiz">Start Quiz</div>
-        <div id="currentQuestion">Current question</div>
-        <div id="addNameForm">Add name to High Scores</div>
-        <div id="highScores">High Scores</div>
+        <div id="container">
+            <div id="startQuiz">
+                <h1>Welcome to Dan Aument's Code Quiz</h1>
+                <button>Start Quiz</button>
+            </div>
+            <div id="currentQuestion">Current question</div>
+            <div id="addNameForm">Add name to High Scores</div>
+            <div id="highScores">High Scores</div>
+        </div>
     </main>
     <footer>
         <div>Made by Dan</div>
