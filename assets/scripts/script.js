@@ -5,21 +5,39 @@ var jsQuizBtnEl = document.querySelector("#jsQuizStartBtn");
 var correctAnswerBtnEl = document.querySelector("#correctAnswerBtn");
 var wrongAnswerBtnEl = document.querySelector("#wrongAnswerBtn");
 
-
-
 // load initial values
 var init = function() {
-    if (localStorage.getItem("timeLeft") === null) {
+    if (sessionStorage.getItem("timeLeft") === null) {
         resetTimer();
     }
-    if (localStorage.getItem("currentPage") !== "") {
-        localStorage.setItem("currentPage", "welcomePage")
+    if (sessionStorage.getItem("currentPage") !== "") {
+        sessionStorage.setItem("currentPage", "welcomePage")
     }
 }
 
+var indexShuffler = function(input) {
+    input = parseInt(input);
+    if (Number.isInteger(input) === false) {
+        console.log("Index shuffler function failed.  The input was " + input);
+    }
+    else {
+        var sourceValues = [];
+        for (i = 0; i < input; i++) {
+            sourceValues = sourceValues.push(i);
+        } 
+        console.log("The input was " + input + "and the source values generated were" + sourceValues + ".");
+    }
+       // destructively pull out values from sourceValues at random
+    var shuffledValues = [];
+    while (sourceValues.length > 0) {
+        var pickAValue = Math.floor(Math.random() * sourceValues.length)
+        var yankedValue = sourceValues.splice(pickAValue, 1);
+        shuffledValues = shuffledValues.push(yankedValue);
+    }
+    return shuffledValues;
+}
 var renderWelcomePage = function() {
     //do event stuff
-
 
     //render page
     var welcomeHeader = document.createElement("h1");
@@ -32,14 +50,35 @@ var renderWelcomePage = function() {
     containerEl.appendChild(jsQuizStartBtn);
 }
 
+var renderTime = function () {
+    var currentTime = sessionStorage.getItem("timeLeft");
+    timerSpanEl.innerText = currentTime;
+    //add handling for time expiring
+}
 
 var resetTimer = function() {
-    localStorage.setItem("timeLeft", "75");
+    sessionStorage.setItem("timeLeft", "75");
+}
+
+var startTimer = function() {
+    var storedTime = sessionStorage.getItem("timeLeft");
+    if (storedTime > 0) {
+        interval = setInterval(function() {
+            storedTime0--;
+            renderTime();
+        }, 1000);
+    } else {
+        alert("Something went wrong. Resetting the quiz.");
+        resetTimer();
+        sessionStorage.setItem("currentPage", "welcomePage");
+    }
+
 }
 
 var renderPage = function() {
-    var page = localStorage.getItem("currentPage");
+    var page = sessionStorage.getItem("currentPage");
     containerEl.innerHTML = "";  //clean out previous page elements
+    renderTime();
     if (page === "welcomePage") {
         renderWelcomePage();
     }
@@ -52,16 +91,28 @@ var renderPage = function() {
     else if (page === "enterName") {
         renderEnterName();
     }
-}
+};
+
+var setQuizTopic = function(input) {
+    sessionStorage.setItem("currentQuizTopic", input);
+};
+
+var setQuestionOrder = function() {
+    var currentQuiz = sessionStorage.getItem("currentQuizTopic");
+    var questionOrder = indexShuffler(quizBank.currentQuiz.length);
+    //need to access object at a variable key
+    questionOrder = JSON.stringify(questionOrder);
+    sessionStorage.setItem(questionOrder);
+};
 
 var loadNextQuestion = function() {
 
 };
 
 var errorPenalty = function() {
-    var currentTimeLeft = parseInt(localStorage.getItem("timeLeft"));
+    var currentTimeLeft = parseInt(sessionStorage.getItem("timeLeft"));
     currentTimeLeft = currentTimeLeft - 10;
-    localStorage.setItem("timeLeft", currentTimeLeft);
+    sessionStorage.setItem("timeLeft", currentTimeLeft);
 };
 
 init();
@@ -72,7 +123,9 @@ renderPage();
 jsQuizBtnEl.addEventListener("click", function() {
     resetTimer();
     startTimer();
-    localStorage.setItem("currentPage", "quizPage");
+    setQuizTopic();
+    setQuestionOrder();
+    sessionStorage.setItem("currentPage", "quizPage");
     loadNextQuestion();
     renderPage();
 });
