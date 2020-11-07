@@ -5,7 +5,7 @@ var quizBank = {
         {   question: "string",
             answers: [
                 {answerText: "string",
-                answerVeracity: boolean}
+                answerVeracity: boolean},
                 {answerText: "string",
                 answerVeracity: boolean}
             ],
