@@ -76,8 +76,36 @@ header {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    max-width: 500px;
   }
 
 #container button:hover {
     background-color: var(--orchid-crayola);
+}
+
+
+#container td {
+    width: 50%;
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: 2px;
+    border-bottom-color: var(--blue-munsell);
+    border-bottom-style: solid;
+    margin-bottom: 1px;
+}
+
+#container tr:nth-child(odd) {
+    background-color: lightgray;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--jet);
+    color: var(--floral-white);
+    text-align: center;
+    padding: 2%;
+
 }
